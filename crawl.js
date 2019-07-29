@@ -28,11 +28,11 @@ async function run() {
 
   await page.click(BUTTON_SELECTOR);
 
-  await page.waitForNavigation();
+  //await page.waitForNavigation();
 
-  await page.screenshot({ path: '/home/rudra/Pictures/screenshots/login-github.png' });
+  //await page.screenshot({ path: '/home/rudra/Pictures/screenshots/login-github.png' });
   const userToSearch = 'john';
-  const searchURL = 'https://github.com/search?q=john';
+  const searchURL = 'https://github.com/search?q=john&type=Users';
 
   await page.goto(searchURL);
   await page.waitFor(2*1000);
@@ -43,7 +43,7 @@ async function run() {
 // const LIST_EMAIL_SELECTOR = '#user_search_results > div.user-list > div:nth-child(2) > div.d-flex > div > ul > li:nth-child(2) > a';
   const LIST_EMAIL_SELECTOR = '#user_search_results > div.user-list > div:nth-child(INDEX) > div.d-flex > div > ul > li:nth-child(2) > a';
 
- // #user_search_results > div.user-list > div:nth-child(1) > div.d-flex.flex-auto > div > a
+ const LIST_USERNAME_BUTTON_SELECTOR = '#user_search_results > div.user-list > div:nth-child(INDEX) > div.d-flex > a';
   
  
  const LENGTH_SELECTOR_CLASS = 'user-list-item';
@@ -60,9 +60,16 @@ async function run() {
 
 for (let i = 1;i<= listLength ; i++){
 
+  
+  let usernameButtonSelector = LIST_USERNAME_BUTTON_SELECTOR.replace("INDEX",i);
+  await page.click(usernameButtonSelector);
+  await page.waitFor(5*1000);
+  await page.goBack();
+  await page.waitFor(5*1000);
+
+  /*
   let usernameSelector = LIST_USERNAME_SELECTOR.replace("INDEX",i);
   let emailSelector = LIST_EMAIL_SELECTOR.replace("INDEX",i);
-
   //now we extract username from usernameSelector
   let username = await page.evaluate((sel) => {
     return document.querySelector(sel).getAttribute('href').replace('/', '');
@@ -77,10 +84,11 @@ for (let i = 1;i<= listLength ; i++){
   }, emailSelector);
 
   //not all user have email visible
-  if(!email)
-  continue;
+ // if (!email)
+     // continue;
 
-  console.log(username,' -> ',email);
+    console.log(username, ' -> ', email);
+*/
 
 }
 
